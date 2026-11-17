@@ -31,6 +31,11 @@ export default class NoteViewer {
 
 		if (!file) return;
 
+		const lastModified = file.stat.mtime;
+		const daysAgo = Math.floor(
+			(Date.now() - lastModified) / (1000 * 60 * 60 * 24),
+		);
+
 		/*if (this.plugin.mySettings.showTitle) {
 			this.updateTitle(file);
 		}*/
@@ -118,6 +123,10 @@ export default class NoteViewer {
 
 		editButton.addEventListener('click', () => {
 			void this.app.workspace.getLeaf(true).openFile(file);
+		});
+
+		const info = this.container.createDiv({
+			text: `Last modified ${daysAgo} days ago`,
 		});
 	}
 

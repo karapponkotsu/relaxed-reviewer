@@ -1,4 +1,4 @@
-import type { DataviewApi } from '@mnaoumov/obsidian-dataview';
+import type { DataviewApi } from '@mnaoumov/obsidian-dataview'; //npm install -D @mnaoumov/obsidian-dataview
 import { getAPI } from '@mnaoumov/obsidian-dataview';
 import RelaxedReviewerPlugin from '../main';
 import { App } from 'obsidian';

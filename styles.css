@@ -1,0 +1,10 @@
+.note-item.selected {
+	background-color: var(--background-modifier-hover);
+}
+
+.reviewer-buttons {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: nowrap;
+}

@@ -31,7 +31,7 @@ export default defineConfig(
 	...obsidianmd.configs.recommended,
 	{
 		rules: {
-			'obsidianmd/no-direct-styles': 'off',
+			'obsidianmd/no-static-styles-assignment': 'off',
 			'obsidianmd/ui/sentence-case': 'off',
 		},
 	},

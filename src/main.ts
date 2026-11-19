@@ -57,7 +57,7 @@ export default class RelaxedReviewerPlugin extends Plugin {
 
 		this.addCommand({
 			id: 'show-search-modal',
-			name: 'Omnisearch query',
+			name: 'Omnisearch search',
 			callback: async () => {
 				await this.activateLeftView();
 				//await this.activateCentralView();

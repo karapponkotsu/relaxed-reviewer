@@ -1,4 +1,4 @@
-import { Plugin } from 'obsidian';
+import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { CentralView, VIEW_TYPE_CENTRAL } from './views/CentralView';
 import { LeftView, VIEW_TYPE_LEFT } from './views/LeftView';
 import Session from './Session';
@@ -41,7 +41,9 @@ export default class RelaxedReviewerPlugin extends Plugin {
 		this.addCommand({
 			id: 'show-query-modal',
 			name: 'Dataview query',
-			callback: () => {
+			callback: async () => {
+				await this.activateLeftView();
+				await this.activateCentralView();
 				const modal = new SearchModal(this, 'dataview', async (query, mode) => {
 					const queryResult = await this.dataviewQuery?.executeQuery(query);
 					if (queryResult && queryResult.length > 0 && this.session) {
@@ -56,7 +58,9 @@ export default class RelaxedReviewerPlugin extends Plugin {
 		this.addCommand({
 			id: 'show-search-modal',
 			name: 'Omnisearch query',
-			callback: () => {
+			callback: async () => {
+				await this.activateLeftView();
+				await this.activateCentralView();
 				const modal = new SearchModal(this, 'omnisearch', async (keyword) => {
 					const omnisearch = window.omnisearch;
 
@@ -79,4 +83,37 @@ export default class RelaxedReviewerPlugin extends Plugin {
 	}
 
 	onunload() {}
+
+	async activateCentralView() {
+		const { workspace } = this.app;
+
+		let leaf: WorkspaceLeaf | undefined =
+			workspace.getLeavesOfType(VIEW_TYPE_CENTRAL)[0];
+
+		if (!leaf) {
+			leaf = workspace.getLeaf(true);
+			await leaf.setViewState({ type: VIEW_TYPE_CENTRAL, active: true });
+		}
+
+		await workspace.revealLeaf(leaf);
+	}
+
+	async activateLeftView() {
+		const { workspace } = this.app;
+
+		let leaf: WorkspaceLeaf | null | undefined =
+			workspace.getLeavesOfType(VIEW_TYPE_LEFT)[0];
+
+		if (!leaf) {
+			leaf = workspace.getLeftLeaf(false);
+
+			if (!leaf) {
+				return;
+			}
+
+			await leaf.setViewState({ type: VIEW_TYPE_LEFT, active: true });
+		}
+
+		await workspace.revealLeaf(leaf);
+	}
 }

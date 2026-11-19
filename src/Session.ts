@@ -1,9 +1,7 @@
-import { App, WorkspaceLeaf } from 'obsidian';
+import { App } from 'obsidian';
 import RelaxedReviewerPlugin from './main.js';
-import { CentralView, VIEW_TYPE_CENTRAL } from './views/CentralView.js';
-import { LeftView, VIEW_TYPE_LEFT } from './views/LeftView.js';
-import NotesList from './NotesList.js';
-import NoteViewer from './NoteViewer.js';
+import NotesList from './ui/NotesList.js';
+import NoteViewer from './ui/NoteViewer.js';
 
 export default class Session {
 	private plugin: RelaxedReviewerPlugin;
@@ -27,32 +25,17 @@ export default class Session {
 			this.notes = this.notes.filter((item) => queryResult.includes(item));
 		}
 
-		await this.activateLeftView();
-		await this.activateCentralView();
+		this.notesList = new NotesList(this.plugin, (index) => {
+			this.setCurrentNote(index);
+		});
 
-		const leftView = this.getLeftView();
+		this.notesList.draw(this.notes);
 
-		if (leftView) {
-			const container = leftView.contentEl;
-
-			this.notesList = new NotesList(container, (index) => {
-				this.setCurrentNote(index);
-			});
-
-			this.notesList.draw(this.notes);
-		}
-
-		const centralView = this.getCentralView();
-
-		if (centralView) {
-			this.noteViewer = new NoteViewer(
-				this.plugin,
-				centralView,
-				centralView.contentEl,
-				() => this.setCurrentNote(this.currentNote + 1),
-				() => this.setCurrentNote(this.currentNote - 1),
-			);
-		}
+		this.noteViewer = new NoteViewer(
+			this.plugin,
+			() => this.setCurrentNote(this.currentNote + 1),
+			() => this.setCurrentNote(this.currentNote - 1),
+		);
 	}
 
 	setCurrentNote(index: number) {
@@ -71,48 +54,5 @@ export default class Session {
 			this.currentNote + 1,
 			this.notes.length,
 		);
-	}
-
-	async activateCentralView() {
-		const { workspace } = this.app;
-
-		let leaf: WorkspaceLeaf | undefined =
-			workspace.getLeavesOfType(VIEW_TYPE_CENTRAL)[0];
-
-		if (!leaf) {
-			leaf = workspace.getLeaf(true);
-			await leaf.setViewState({ type: VIEW_TYPE_CENTRAL, active: true });
-		}
-
-		await workspace.revealLeaf(leaf);
-	}
-
-	async activateLeftView() {
-		const { workspace } = this.app;
-
-		let leaf: WorkspaceLeaf | null | undefined =
-			workspace.getLeavesOfType(VIEW_TYPE_LEFT)[0];
-
-		if (!leaf) {
-			leaf = workspace.getLeftLeaf(false);
-
-			if (!leaf) {
-				return;
-			}
-
-			await leaf.setViewState({ type: VIEW_TYPE_LEFT, active: true });
-		}
-
-		await workspace.revealLeaf(leaf);
-	}
-
-	getCentralView(): CentralView | null {
-		const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_CENTRAL);
-		return leaves[0]?.view instanceof CentralView ? leaves[0].view : null;
-	}
-
-	getLeftView(): LeftView | null {
-		const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_LEFT);
-		return leaves[0]?.view instanceof LeftView ? leaves[0].view : null;
 	}
 }

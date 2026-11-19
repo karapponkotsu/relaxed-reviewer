@@ -29,4 +29,10 @@ export default defineConfig(
 		},
 	},
 	...obsidianmd.configs.recommended,
+	{
+		rules: {
+			'obsidianmd/no-direct-styles': 'off',
+			'obsidianmd/ui/sentence-case': 'off',
+		},
+	},
 );

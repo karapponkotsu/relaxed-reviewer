@@ -1,19 +1,22 @@
-import { Component, MarkdownRenderer, Plugin, TFile } from 'obsidian';
+import { App, Component, MarkdownRenderer, TFile } from 'obsidian';
 import { CentralView } from '../views/CentralView';
 import NoteParser from '../utils/NoteParser.js';
 import { VIEW_TYPE_CENTRAL } from '../views/CentralView';
 import FileInfo from '../utils/FileInfo.js';
+import RelaxedReviewerPlugin from '../main';
 
 export default class NoteViewer {
-	private app: Plugin['app'];
+	private plugin: RelaxedReviewerPlugin;
+	private app: App;
 	private component: Component | null = null;
 	private fileInfo: FileInfo;
 
 	constructor(
-		plugin: Plugin,
+		plugin: RelaxedReviewerPlugin,
 		private onNextNote: () => void,
 		private onPreviousNote: () => void,
 	) {
+		this.plugin = plugin;
 		this.app = plugin.app;
 		this.fileInfo = new FileInfo(this.app);
 	}
@@ -23,10 +26,12 @@ export default class NoteViewer {
 		this.component?.unload();
 		this.component = null;
 
+		await this.plugin.activateCentralView();
+
 		const view = this.getCentralView();
 		if (view) {
-			const container = view.containerEl;
-			container.empty();
+			const contentEl = view.contentEl;
+			contentEl.empty();
 
 			const file = this.app.vault.getFileByPath(path);
 
@@ -43,16 +48,15 @@ export default class NoteViewer {
 			const content = await this.app.vault.read(file);
 			const note = NoteParser.parse(content);
 
-			container.addClass('markdown-preview-view');
+			contentEl.addClass('markdown-preview-view');
 
-			const questionContainer = container.createDiv();
+			const questionContainer = contentEl.createDiv();
 			questionContainer.dataset.sourcePath = file.path;
 
-			const answerContainer = container.createDiv();
+			const answerContainer = contentEl.createDiv();
 			answerContainer.dataset.sourcePath = file.path;
 			answerContainer.style.display = 'none';
 
-			// Create a new component for this rendering.
 			this.component = new Component();
 			this.component.load();
 
@@ -74,7 +78,7 @@ export default class NoteViewer {
 				);
 			}
 
-			const buttonsContainer = container.createDiv({
+			const buttonsContainer = contentEl.createDiv({
 				cls: 'reviewer-buttons',
 			});
 
@@ -121,7 +125,8 @@ export default class NoteViewer {
 				void this.app.workspace.getLeaf(true).openFile(file);
 			});
 
-			container.createDiv({
+			contentEl.createDiv({
+				cls: 'note-info',
 				text: `${noteNumber}/${totalNotes} | Last modified ${daysAgo} days ago`,
 			});
 		}

@@ -18,12 +18,13 @@ export default class NotesList {
 	draw(notes: string[]) {
 		const view = this.getLeftView();
 		if (view) {
-			const container = view.containerEl;
-			container.empty();
+			const contentEl = view.contentEl;
+			contentEl.addClass('notes-list-content');
+			contentEl.empty();
 			this.selectedElement = null;
 
 			notes.forEach((note, index) => {
-				const item = container.createDiv({
+				const item = contentEl.createDiv({
 					text: note,
 					cls: 'note-item',
 				});
@@ -40,8 +41,8 @@ export default class NotesList {
 
 		const view = this.getLeftView();
 		if (view) {
-			const container = view.containerEl;
-			const element = container.children[index] as HTMLElement | undefined;
+			const contentEl = view.contentEl;
+			const element = contentEl.children[index] as HTMLElement | undefined;
 
 			if (element) {
 				element.addClass('selected');

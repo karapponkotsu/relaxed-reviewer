@@ -43,7 +43,7 @@ export default class RelaxedReviewerPlugin extends Plugin {
 			name: 'Dataview query',
 			callback: async () => {
 				await this.activateLeftView();
-				await this.activateCentralView();
+				//await this.activateCentralView();
 				const modal = new SearchModal(this, 'dataview', async (query, mode) => {
 					const queryResult = await this.dataviewQuery?.executeQuery(query);
 					if (queryResult && queryResult.length > 0 && this.session) {
@@ -60,7 +60,7 @@ export default class RelaxedReviewerPlugin extends Plugin {
 			name: 'Omnisearch query',
 			callback: async () => {
 				await this.activateLeftView();
-				await this.activateCentralView();
+				//await this.activateCentralView();
 				const modal = new SearchModal(this, 'omnisearch', async (keyword) => {
 					const omnisearch = window.omnisearch;
 

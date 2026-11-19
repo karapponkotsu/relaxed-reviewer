@@ -66,7 +66,11 @@ export default class Session {
 
 		this.notesList?.select(index);
 
-		void this.noteViewer?.openNote(note);
+		void this.noteViewer?.openNote(
+			note,
+			this.currentNote + 1,
+			this.notes.length,
+		);
 	}
 
 	async activateCentralView() {

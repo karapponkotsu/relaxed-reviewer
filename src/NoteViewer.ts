@@ -20,7 +20,7 @@ export default class NoteViewer {
 		this.fileInfo = new FileInfo(this.app);
 	}
 
-	async openNote(path: string) {
+	async openNote(path: string, noteNumber: number, totalNotes: number) {
 		// Clean up the previous rendering.
 		this.component?.unload();
 		this.component = null;
@@ -125,8 +125,8 @@ export default class NoteViewer {
 			void this.app.workspace.getLeaf(true).openFile(file);
 		});
 
-		const info = this.container.createDiv({
-			text: `Last modified ${daysAgo} days ago`,
+		this.container.createDiv({
+			text: `${noteNumber}/${totalNotes} | Last modified ${daysAgo} days ago`,
 		});
 	}
 

@@ -24,8 +24,10 @@ export default class NotesList {
 			this.selectedElement = null;
 
 			notes.forEach((note, index) => {
+				const file = this.app.vault.getFileByPath(note);
+
 				const item = contentEl.createDiv({
-					text: note,
+					text: file?.basename ?? note,
 					cls: 'note-item',
 				});
 

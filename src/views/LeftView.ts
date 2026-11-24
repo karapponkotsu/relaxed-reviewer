@@ -12,7 +12,7 @@ export class LeftView extends ItemView {
 	}
 
 	getDisplayText() {
-		return 'Left view';
+		return 'Relaxed Reviewer: list';
 	}
 
 	async onOpen() {

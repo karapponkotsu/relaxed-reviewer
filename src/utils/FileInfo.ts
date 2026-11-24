@@ -19,6 +19,6 @@ export default class FileInfo {
 		const cache = this.app.metadataCache.getFileCache(file);
 		const frontmatter = cache?.frontmatter as ReviewerFrontmatter;
 
-		return frontmatter?.relaxed_reviewer ?? 0;
+		return frontmatter?.relaxed_reviewer ?? -1;
 	}
 }

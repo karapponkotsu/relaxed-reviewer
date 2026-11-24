@@ -12,7 +12,7 @@ export class CentralView extends ItemView {
 	}
 
 	getDisplayText() {
-		return 'Central view';
+		return 'Relaxed Reviewer: note';
 	}
 
 	async onOpen() {

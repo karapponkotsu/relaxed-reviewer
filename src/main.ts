@@ -4,6 +4,8 @@ import { LeftView, VIEW_TYPE_LEFT } from './views/LeftView';
 import Session from './Session';
 import { SearchModal } from './modals/SearchModal';
 import { DataviewQuery } from './utils/DataviewQuery';
+import { MySettings, DEFAULT_MYSETTINGS } from './settings/MySettings';
+import { MySettingTab } from './settings/ui/MySettingTab';
 
 export type OmnisearchResult = {
 	path: string;
@@ -20,10 +22,15 @@ declare global {
 }
 
 export default class RelaxedReviewerPlugin extends Plugin {
+	settings: MySettings = DEFAULT_MYSETTINGS;
+
 	dataviewQuery: DataviewQuery | null = null;
 	session: Session | null = null;
 
 	async onload() {
+		await this.loadSettings();
+		this.addSettingTab(new MySettingTab(this));
+
 		this.registerView(VIEW_TYPE_CENTRAL, (leaf) => new CentralView(leaf));
 		this.registerView(VIEW_TYPE_LEFT, (leaf) => new LeftView(leaf));
 
@@ -43,9 +50,15 @@ export default class RelaxedReviewerPlugin extends Plugin {
 			name: 'Dataview query',
 			callback: async () => {
 				await this.activateLeftView();
-				//await this.activateCentralView();
 				const modal = new SearchModal(this, 'dataview', async (query, mode) => {
-					const queryResult = await this.dataviewQuery?.executeQuery(query);
+					const finalQuery = query.trim() || this.settings.defaultDataviewQuery;
+
+					if (!finalQuery) {
+						return;
+					}
+
+					const queryResult =
+						await this.dataviewQuery?.executeQuery(finalQuery);
 					if (queryResult && queryResult.length > 0 && this.session) {
 						void this.session.init(queryResult);
 					}
@@ -60,7 +73,6 @@ export default class RelaxedReviewerPlugin extends Plugin {
 			name: 'Omnisearch search',
 			callback: async () => {
 				await this.activateLeftView();
-				//await this.activateCentralView();
 				const modal = new SearchModal(this, 'omnisearch', async (keyword) => {
 					const omnisearch = window.omnisearch;
 
@@ -83,6 +95,16 @@ export default class RelaxedReviewerPlugin extends Plugin {
 	}
 
 	onunload() {}
+
+	async loadSettings() {
+		const data = (await this.loadData()) as Partial<MySettings>;
+
+		this.settings = Object.assign({}, DEFAULT_MYSETTINGS, data);
+	}
+
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
 
 	async activateCentralView() {
 		const { workspace } = this.app;

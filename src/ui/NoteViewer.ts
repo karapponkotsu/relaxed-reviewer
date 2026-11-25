@@ -42,8 +42,11 @@ export default class NoteViewer {
 				(Date.now() - lastModified) / (1000 * 60 * 60 * 24),
 			);
 
-			//if (this.plugin.mySettings.showTitle) {	this.updateTitle(file);	}
-			this.updateTitle(file);
+			//this.updateTitle(file);
+
+			if (this.plugin.settings.showTitle) {
+				this.updateTitle(file);
+			}
 
 			const content = await this.app.vault.read(file);
 			const note = NoteParser.parse(content);

@@ -2,7 +2,7 @@
 	"id": "relaxed-reviewer-plugin",
 	"name": "Relaxed Reviewer Plugin",
 	"version": "1.0.0",
-	"minAppVersion": "1.7.2",
+	"minAppVersion": "1.13.0",
 	"description": "This is a relaxed reviewer for Obsidian",
 	"author": "Karapponkotsu",
 	"authorUrl": "https://github.com/karapponkotsu",

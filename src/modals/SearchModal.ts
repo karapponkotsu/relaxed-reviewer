@@ -38,7 +38,8 @@ export class SearchModal extends SuggestModal<string> {
 	}*/
 
 	getSuggestions(search: string): string[] {
-		return search ? [search] : [];
+		//return search ? [search] : [];
+		return [search];
 	}
 
 	renderSuggestion(value: string, el: HTMLElement) {

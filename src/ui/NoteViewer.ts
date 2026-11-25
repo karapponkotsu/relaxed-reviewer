@@ -1,8 +1,8 @@
-import { App, Component, MarkdownRenderer, TFile } from 'obsidian';
+import { App, Component, MarkdownRenderer, TFile, setIcon } from 'obsidian';
 import { CentralView } from '../views/CentralView';
-import NoteParser from '../utils/NoteParser.js';
+import NoteParser from '../utils/NoteParser';
 import { VIEW_TYPE_CENTRAL } from '../views/CentralView';
-import FileInfo from '../utils/FileInfo.js';
+import FileInfo from '../utils/FileInfo';
 import RelaxedReviewerPlugin from '../main';
 
 export default class NoteViewer {
@@ -126,6 +126,36 @@ export default class NoteViewer {
 
 			editButton.addEventListener('click', () => {
 				void this.app.workspace.getLeaf(true).openFile(file);
+			});
+
+			const markButton = buttonsContainer.createEl('button');
+			setIcon(markButton, 'star');
+
+			const isMarked = this.fileInfo.hasTag(file, 'relaxed_reviewer/marked');
+
+			markButton.toggleClass('is-marked', isMarked);
+
+			markButton.addEventListener('click', () => {
+				void this.fileInfo.toggleTag(file, 'relaxed_reviewer/marked');
+				markButton.toggleClass('is-marked', !markButton.hasClass('is-marked'));
+			});
+
+			const suspendButton = buttonsContainer.createEl('button');
+			setIcon(suspendButton, 'pause-circle');
+
+			const isSuspended = this.fileInfo.hasTag(
+				file,
+				'relaxed_reviewer/suspended',
+			);
+
+			suspendButton.toggleClass('is-suspended', isSuspended);
+
+			suspendButton.addEventListener('click', () => {
+				void this.fileInfo.toggleTag(file, 'relaxed_reviewer/suspended');
+				suspendButton.toggleClass(
+					'is-suspended',
+					!suspendButton.hasClass('is-suspended'),
+				);
 			});
 
 			contentEl.createDiv({

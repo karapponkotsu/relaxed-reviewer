@@ -17,3 +17,11 @@
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 }
+
+.is-marked svg {
+	color: #eab308;
+}
+
+.is-suspended svg {
+	color: #a78bfa;
+}

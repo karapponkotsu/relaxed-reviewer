@@ -36,3 +36,15 @@
 .reviewer-grade-buttons {
 	display: contents;
 }
+
+.reviewer-question p {
+	//margin-bottom: 0;
+}
+
+.reviewer-divider {
+	margin-block: 0;
+}
+
+.reviewer-answer p {
+	//margin-top: 0;
+}

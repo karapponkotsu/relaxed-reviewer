@@ -53,10 +53,19 @@ export default class NoteViewer {
 
 			contentEl.addClass('markdown-preview-view');
 
-			const questionContainer = contentEl.createDiv();
+			const questionContainer = contentEl.createDiv({
+				cls: 'reviewer-question',
+			});
 			questionContainer.dataset.sourcePath = file.path;
 
-			const answerContainer = contentEl.createDiv();
+			const separatorContainer = contentEl.createEl('hr', {
+				cls: 'reviewer-divider',
+			});
+			separatorContainer.style.display = 'none';
+
+			const answerContainer = contentEl.createDiv({
+				cls: 'reviewer-answer',
+			});
 			answerContainer.dataset.sourcePath = file.path;
 			answerContainer.style.display = 'none';
 
@@ -104,6 +113,7 @@ export default class NoteViewer {
 
 				button.addEventListener('click', () => {
 					answerContainer.style.display = 'block';
+					separatorContainer.style.display = 'block';
 					button.remove();
 
 					this.createGradeButtons(file, gradeButtonsContainer);

@@ -93,7 +93,9 @@ export default class NoteViewer {
 				this.onPreviousNote();
 			});
 
-			const gradeButtonsContainer = buttonsContainer.createDiv();
+			const gradeButtonsContainer = buttonsContainer.createDiv({
+				cls: 'reviewer-grade-buttons',
+			});
 
 			if (note.answer !== null && note.answer !== '') {
 				const button = buttonsContainer.createEl('button', {

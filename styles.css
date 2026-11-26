@@ -25,3 +25,14 @@
 .is-suspended svg {
 	color: #a78bfa;
 }
+
+.reviewer-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+}
+
+.reviewer-grade-buttons {
+	display: contents;
+}

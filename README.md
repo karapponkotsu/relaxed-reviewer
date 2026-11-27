@@ -74,3 +74,5 @@ LIST FROM "math" AND (#algebra OR #geometry) WHERE simple_reviewer = 7 OR simple
 ![Question](./images/front.webp)
 
 ![Answer](./images/back.webp)
+
+![Settings](./images/settings.webp)

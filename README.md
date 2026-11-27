@@ -1,8 +1,8 @@
 # Relaxed Reviewer
 
-A plugin to review and grade your Obsidian notes.
+A plugin for reviewing and grading your Obsidian notes.
 
-> **Note:** This plugin is a work in progress. Expect bugs and messy code - I built it because I couldn't find an existing solution that fit my needs.
+> **Note:** This plugin is a work in progress. Expect bugs and messy code! I built it because I couldn't find an existing solution that met my needs.
 
 ## Requirements
 
@@ -11,40 +11,45 @@ A plugin to review and grade your Obsidian notes.
 
 ## Commands
 
-The plugin adds three commands (accessible via `Ctrl/Cmd + P`):
+The plugin adds three commands, accessible via `Ctrl/Cmd + P`:
 
-- **Dataview query** – Execute a Dataview query
-- **Omnisearch search** – Perform an Omnisearch search
-- **Reset session** - Reset the review session
+- **Dataview query** – Run a Dataview query.
+- **Omnisearch search** – Search using Omnisearch.
+- **Reset session** – Reset the current review session.
 
 ## Features
 
 ### Search & Navigation
 
-- Run Dataview queries or Omnisearch searches
-- Results appear in the left panel
-- Dataview and Omnisearch search the entire vault if no results exist, or filter against the current result list if available
-- Execute the Reset session command if you want to search the entire vault again
-- Click any note to open it, and use **Previous/Next** buttons to navigate the list
+- Run Dataview queries or Omnisearch searches.
+- Search results appear in the left panel.
+- Dataview and Omnisearch search the entire vault if no previous search results are available. Otherwise, they filter the current result list.
+- Use the **Reset session** command to start a new search across the entire vault.
+- Submitting an empty query runs the default query specified in the settings.
+- Click any note to open it, then use the **Previous/Next** buttons to navigate through the results.
 
 ### Grading
 
-- Each note displays 8 grade buttons (0–7)
-- Grades are saved as a note property: `relaxed_reviewer`
-- Already-graded notes show the corresponding button highlighted
-- Grading automatically updates the note's modification date
+- Each note displays 8 grading buttons (configurable in the settings).
+- Grades are saved as a note property (configurable in the settings).
+- Previously graded notes have their corresponding grade button highlighted.
+- Grading a note automatically updates its modification date.
 
 ### Note Content
 
-- **Hide title** – Useful when the title might reveal the answer _(TODO)_
-- **Hide content** – Use `%%??%%` in your note to hide everything after that point
-- A **Show Answer** button appears for hidden sections; clicking it reveals the content and enables grading
-- After grading, the view automatically advances to the next note
+- **Hide title** – Useful when the title might reveal the answer.
+- **Hide content** – Use `%%??%%` in your note to hide everything after the separator.
+- A **Show Answer** button appears when a note contains a hidden section. Clicking it reveals the answer and enables grading.
+- After grading a note, the plugin automatically advances to the next one.
+- The question and answer can be swapped through the settings.
 
-### Custom Suggestions
+### Review Sessions
 
-- Save your frequently used Dataview queries and Omnisearch keywords _(TODO)_
-- They'll appear as suggestions in the search modals
+- Each review session gets a unique ID when a new query is executed.
+- Notes are automatically assigned the current session ID when opened during a review session.
+- The session ID is saved as a note property (frontmatter), making it possible to identify which session a note belongs to.
+- You can use the session ID in a Dataview query to retrieve all notes opened during a particular session, allowing you to review the same set of notes again later.
+- Use the **Reset session** command to clear the current session and start a fresh search.
 
 ## Example Dataview Queries
 

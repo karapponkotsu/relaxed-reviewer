@@ -245,6 +245,12 @@ export default class NoteViewer {
 
 			button.addEventListener('click', () => {
 				void this.fileInfo.setGrade(file, i).then(() => {
+					buttonsContainer.querySelectorAll('button').forEach((btn) => {
+						btn.removeClass('mod-cta');
+					});
+
+					button.addClass('mod-cta');
+
 					this.onNextNote();
 				});
 			});

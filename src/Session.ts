@@ -9,6 +9,7 @@ export default class Session {
 
 	private currentNote = 0;
 	private notes: string[] = [];
+	private currentSessionId: string | null = null;
 
 	private notesList: NotesList | null = null;
 	private noteViewer: NoteViewer | null = null;
@@ -21,6 +22,7 @@ export default class Session {
 	async init(queryResult: string[]) {
 		if (this.notes.length < 1) {
 			this.notes = queryResult;
+			this.currentSessionId = new Date().toISOString();
 		} else {
 			this.notes = this.notes.filter((item) => queryResult.includes(item));
 		}
@@ -33,6 +35,7 @@ export default class Session {
 
 		this.noteViewer = new NoteViewer(
 			this.plugin,
+			() => this.currentSessionId,
 			() => this.setCurrentNote(this.currentNote + 1),
 			() => this.setCurrentNote(this.currentNote - 1),
 		);

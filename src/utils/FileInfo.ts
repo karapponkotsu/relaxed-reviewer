@@ -19,7 +19,7 @@ export default class FileInfo {
 	async setGrade(file: TFile, newGrade: number) {
 		await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
 			const data = frontmatter as ReviewerFrontmatter;
-			data[this.plugin.settings.frontmatterName] = newGrade;
+			data[this.plugin.settings.frontmatterName + '_grade'] = newGrade;
 		});
 	}
 
@@ -27,7 +27,8 @@ export default class FileInfo {
 		const cache = this.app.metadataCache.getFileCache(file);
 		const frontmatter = cache?.frontmatter as ReviewerFrontmatter;
 
-		const grade = frontmatter?.[this.plugin.settings.frontmatterName];
+		const grade =
+			frontmatter?.[this.plugin.settings.frontmatterName + '_grade'];
 
 		return typeof grade === 'number' ? grade : -1;
 	}
@@ -62,6 +63,20 @@ export default class FileInfo {
 			data.tags = tags.includes(tag)
 				? tags.filter((t) => t !== tag)
 				: [...tags, tag];
+		});
+	}
+
+	async setSessionId(file: TFile, sessionId: string | null) {
+		await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
+			const data = frontmatter as ReviewerFrontmatter;
+
+			if (sessionId === null) {
+				//delete data.relaxed_reviewer_session;
+				delete data[this.plugin.settings.frontmatterName + '_session'];
+			} else {
+				//data.relaxed_reviewer_session = sessionId;
+				data[this.plugin.settings.frontmatterName + '_session'] = sessionId;
+			}
 		});
 	}
 }

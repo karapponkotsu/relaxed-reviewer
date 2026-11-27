@@ -13,6 +13,7 @@ export default class NoteViewer {
 
 	constructor(
 		plugin: RelaxedReviewerPlugin,
+		private getSessionId: () => string | null,
 		private onNextNote: () => void,
 		private onPreviousNote: () => void,
 	) {
@@ -36,6 +37,12 @@ export default class NoteViewer {
 			const file = this.app.vault.getFileByPath(path);
 
 			if (!file) return;
+
+			const sessionId = this.getSessionId();
+
+			if (sessionId !== null) {
+				await this.fileInfo.setSessionId(file, sessionId);
+			}
 
 			const lastModified = file.stat.mtime;
 			const daysAgo = Math.floor(

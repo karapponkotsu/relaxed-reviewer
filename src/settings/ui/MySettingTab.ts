@@ -36,6 +36,14 @@ export class MySettingTab extends PluginSettingTab {
 				},
 			},
 			{
+				name: 'Front Matter name',
+				desc: 'The name to use for frontmatter grade and tags',
+				control: {
+					type: 'text',
+					key: 'frontmatterName',
+				},
+			},
+			{
 				name: 'Default Dataview query',
 				desc: 'Query to use when no query is provided',
 				control: {

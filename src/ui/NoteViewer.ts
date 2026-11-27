@@ -18,7 +18,7 @@ export default class NoteViewer {
 	) {
 		this.plugin = plugin;
 		this.app = plugin.app;
-		this.fileInfo = new FileInfo(this.app);
+		this.fileInfo = new FileInfo(this.plugin);
 	}
 
 	async openNote(path: string, noteNumber: number, totalNotes: number) {
@@ -149,12 +149,18 @@ export default class NoteViewer {
 			const markButton = buttonsContainer.createEl('button');
 			setIcon(markButton, 'star');
 
-			const isMarked = this.fileInfo.hasTag(file, 'relaxed_reviewer/marked');
+			const isMarked = this.fileInfo.hasTag(
+				file,
+				this.plugin.settings.frontmatterName + '/marked',
+			);
 
 			markButton.toggleClass('is-marked', isMarked);
 
 			markButton.addEventListener('click', () => {
-				void this.fileInfo.toggleTag(file, 'relaxed_reviewer/marked');
+				void this.fileInfo.toggleTag(
+					file,
+					this.plugin.settings.frontmatterName + '/marked',
+				);
 				markButton.toggleClass('is-marked', !markButton.hasClass('is-marked'));
 			});
 
@@ -163,13 +169,16 @@ export default class NoteViewer {
 
 			const isSuspended = this.fileInfo.hasTag(
 				file,
-				'relaxed_reviewer/suspended',
+				this.plugin.settings.frontmatterName + '/suspended',
 			);
 
 			suspendButton.toggleClass('is-suspended', isSuspended);
 
 			suspendButton.addEventListener('click', () => {
-				void this.fileInfo.toggleTag(file, 'relaxed_reviewer/suspended');
+				void this.fileInfo.toggleTag(
+					file,
+					this.plugin.settings.frontmatterName + '/suspended',
+				);
 				suspendButton.toggleClass(
 					'is-suspended',
 					!suspendButton.hasClass('is-suspended'),

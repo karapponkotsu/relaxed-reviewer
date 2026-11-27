@@ -1,18 +1,25 @@
 import { App, TFile } from 'obsidian';
+import RelaxedReviewerPlugin from '../main';
 
 type ReviewerFrontmatter = {
-	relaxed_reviewer?: number;
+	//relaxed_reviewer?: number;
 	tags?: string[] | string;
 	[key: string]: unknown;
 };
 
 export default class FileInfo {
-	constructor(private app: App) {}
+	private plugin: RelaxedReviewerPlugin;
+	private app: App;
+
+	constructor(plugin: RelaxedReviewerPlugin) {
+		this.plugin = plugin;
+		this.app = plugin.app;
+	}
 
 	async setGrade(file: TFile, newGrade: number) {
 		await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
 			const data = frontmatter as ReviewerFrontmatter;
-			data.relaxed_reviewer = newGrade;
+			data[this.plugin.settings.frontmatterName] = newGrade;
 		});
 	}
 
@@ -20,7 +27,9 @@ export default class FileInfo {
 		const cache = this.app.metadataCache.getFileCache(file);
 		const frontmatter = cache?.frontmatter as ReviewerFrontmatter;
 
-		return frontmatter?.relaxed_reviewer ?? -1;
+		const grade = frontmatter?.[this.plugin.settings.frontmatterName];
+
+		return typeof grade === 'number' ? grade : -1;
 	}
 
 	hasTag(file: TFile, tag: string): boolean {

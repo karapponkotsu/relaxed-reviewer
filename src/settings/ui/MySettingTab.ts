@@ -20,6 +20,14 @@ export class MySettingTab extends PluginSettingTab {
 				},
 			},
 			{
+				name: 'Flip note',
+				desc: 'Flips question & answer',
+				control: {
+					type: 'toggle',
+					key: 'flipNote',
+				},
+			},
+			{
 				name: 'Default Dataview query',
 				desc: 'Query to use when no query is provided',
 				control: {

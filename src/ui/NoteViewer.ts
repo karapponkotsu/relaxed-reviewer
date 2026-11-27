@@ -42,8 +42,6 @@ export default class NoteViewer {
 				(Date.now() - lastModified) / (1000 * 60 * 60 * 24),
 			);
 
-			//this.updateTitle(file);
-
 			if (this.plugin.settings.showTitle) {
 				this.updateTitle(file);
 			}
@@ -67,7 +65,14 @@ export default class NoteViewer {
 				cls: 'reviewer-answer',
 			});
 			answerContainer.dataset.sourcePath = file.path;
-			answerContainer.style.display = 'none';
+
+			if (note.answer !== null && note.answer !== '') {
+				if (this.plugin.settings.flipNote) {
+					questionContainer.style.display = 'none';
+				} else {
+					answerContainer.style.display = 'none';
+				}
+			}
 
 			this.component = new Component();
 			this.component.load();
@@ -112,6 +117,7 @@ export default class NoteViewer {
 				});
 
 				button.addEventListener('click', () => {
+					questionContainer.style.display = 'block';
 					answerContainer.style.display = 'block';
 					separatorContainer.style.display = 'block';
 					button.remove();
@@ -172,7 +178,7 @@ export default class NoteViewer {
 
 			contentEl.createDiv({
 				cls: 'note-info',
-				text: `${noteNumber}/${totalNotes} | Last modified ${daysAgo} days ago`,
+				text: `${noteNumber}/${totalNotes} | Last modified ${daysAgo} days ago ${this.plugin.settings.flipNote ? '| REVERSED' : ''}`,
 			});
 		}
 	}

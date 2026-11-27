@@ -209,7 +209,16 @@ export default class NoteViewer {
 
 		const buttonsContainer = container;
 
-		for (let i = 0; i <= 7; i++) {
+		let maxGrade =
+			this.plugin.settings.maxGrade.trim() === ''
+				? NaN
+				: Number(this.plugin.settings.maxGrade);
+
+		if (!Number.isInteger(maxGrade)) {
+			maxGrade = 7;
+		}
+
+		for (let i = 0; i <= maxGrade; i++) {
 			const button = buttonsContainer.createEl('button', {
 				text: String(i),
 			});

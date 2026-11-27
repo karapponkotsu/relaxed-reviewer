@@ -27,20 +27,21 @@ export class SearchModal extends SuggestModal<string> {
 		}
 	}
 
-	/*getSuggestions(search: string): string[] {
+	getSuggestions(search: string): string[] {
 		if (this.mode === 'dataview') {
-			return search ? [search] : this.plugin.mySettings.dataviewSuggestions;
+			return search ? [search] : [this.plugin.settings.defaultDataviewQuery]; //this.plugin.mySettings.dataviewSuggestions;
 		} else if (this.mode === 'omnisearch') {
-			return search ? [search] : this.plugin.mySettings.omnisearchSuggestions;
+			return search ? [search] : []; //this.plugin.mySettings.omnisearchSuggestions;
 		} else {
 			return search ? [search] : [];
+			//return [search];
 		}
-	}*/
+	}
 
-	getSuggestions(search: string): string[] {
+	/*	getSuggestions(search: string): string[] {
 		//return search ? [search] : [];
 		return [search];
-	}
+	}*/
 
 	renderSuggestion(value: string, el: HTMLElement) {
 		el.setText(value);

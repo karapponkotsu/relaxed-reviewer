@@ -28,6 +28,14 @@ export class MySettingTab extends PluginSettingTab {
 				},
 			},
 			{
+				name: 'Max grade',
+				desc: 'The highest grade value (0 to n)',
+				control: {
+					type: 'text',
+					key: 'maxGrade',
+				},
+			},
+			{
 				name: 'Default Dataview query',
 				desc: 'Query to use when no query is provided',
 				control: {
